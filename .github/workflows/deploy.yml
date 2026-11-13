@@ -1,0 +1,76 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json'
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish Backend
+        working-directory: ./backend
+        run: dotnet publish -c Release -r linux-x64 --self-contained false -o ./publish
+
+      - name: Deploy via SSH
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+        run: |
+          # Setup SSH key securely
+          mkdir -p ~/.ssh
+          echo "$EC2_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          
+          RELEASE_NAME=${{ github.sha }}
+          BACKEND_TARGET="/var/www/onevassa/backend/releases/$RELEASE_NAME"
+          FRONTEND_TARGET="/var/www/onevassa/frontend/releases/$RELEASE_NAME"
+          
+          # 1. Create remote directories
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "mkdir -p $BACKEND_TARGET $FRONTEND_TARGET"
+          
+          # 2. Copy Backend artifacts
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r ./backend/publish/* $EC2_USERNAME@$EC2_HOST:$BACKEND_TARGET/
+          
+          # 3. Copy Frontend artifacts (copies the 'dist' folder to match Nginx root path)
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r ./frontend/dist $EC2_USERNAME@$EC2_HOST:$FRONTEND_TARGET/
+          
+          # 4. Activate release and restart services (Stops on failure due to 'set -e')
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "
+            set -e
+            ln -sfn $BACKEND_TARGET /var/www/onevassa/backend/current
+            ln -sfn $FRONTEND_TARGET /var/www/onevassa/frontend/current
+            sudo systemctl restart onevassa-backend
+            sudo systemctl reload nginx
+            
+            # Cleanup old releases (keep latest 3 to save space)
+            ls -td /var/www/onevassa/backend/releases/* | tail -n +4 | xargs -r rm -rf
+            ls -td /var/www/onevassa/frontend/releases/* | tail -n +4 | xargs -r rm -rf
+            
+            echo 'Deployment of $RELEASE_NAME completed successfully.'
+          "
