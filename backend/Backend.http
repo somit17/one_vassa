@@ -1,6 +1,16 @@
 @Backend_HostAddress = http://localhost:5092
 
-GET {{Backend_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{Backend_HostAddress}}/api/plan
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "phone": "+91 99999 00000",
+  "interest": "Tiger Landscapes",
+  "group": "Couple",
+  "season": "Oct – Dec",
+  "message": "We would love a week in the field with a naturalist."
+}
 
 ###

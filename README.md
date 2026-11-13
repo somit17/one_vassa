@@ -21,6 +21,8 @@ npm run build      # production build into dist/frontend
 npm test           # unit tests
 ```
 
+The plan form posts to `http://localhost:5092/api/plan` via `src/app/services/plan.service.ts`.
+
 ## Backend — `backend/`
 
 ASP.NET Core Web API targeting `net10.0`.
@@ -31,7 +33,48 @@ dotnet run         # listens on http://localhost:5092 (https profile also availa
 dotnet build
 ```
 
-Sample endpoint: `GET /weatherforecast` — OpenAPI document at `/openapi/v1.json` in Development.
+`POST /api/plan` receives the "Plan an experience" enquiry (validated with DataAnnotations)
+and saves it to MongoDB. OpenAPI document at `/openapi/v1.json` in Development.
+
+### MongoDB (local)
+
+Requires a local MongoDB server on port `27017`:
+
+```bash
+brew tap mongodb/brew
+brew install mongodb-community
+brew services start mongodb-community
+```
+
+If Homebrew cannot install it (for example outdated Xcode Command Line Tools), use the
+official macOS tarball extracted to `~/mongodb` and start it with the bundled script:
+
+```bash
+./scripts/start-mongodb.sh
+```
+
+Connection settings live in `backend/appsettings.json`:
+
+```json
+"MongoDb": {
+  "ConnectionString": "mongodb://localhost:27017",
+  "DatabaseName": "onevassa",
+  "PlanEnquiriesCollectionName": "planEnquiries"
+}
+```
+
+The API creates the `onevassa` database, the `planEnquiries` collection, and a
+descending index on `createdAtUtc` on startup. Enquiries can be inspected with:
+
+```bash
+mongosh onevassa --eval 'db.planEnquiries.find().sort({ createdAtUtc: -1 }).limit(5)'
+```
+
+Override the connection without committing secrets via environment variables:
+
+```bash
+MongoDb__ConnectionString="mongodb://localhost:27017" dotnet run
+```
 
 ### CORS
 

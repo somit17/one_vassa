@@ -9,6 +9,26 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.9" />
     <PackageReference Include="Microsoft.OpenApi" Version="2.13.0" />
+    <PackageReference Include="MongoDB.Driver" Version="3.13.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="bin\net10.0\linux-x64\publish\appsettings.Development.json" />
+    <Content Include="bin\net10.0\linux-x64\publish\appsettings.json" />
+    <Content Include="bin\net10.0\linux-x64\publish\Backend" />
+    <Content Include="bin\net10.0\linux-x64\publish\Backend.deps.json" />
+    <Content Include="bin\net10.0\linux-x64\publish\Backend.dll" />
+    <Content Include="bin\net10.0\linux-x64\publish\Backend.pdb" />
+    <Content Include="bin\net10.0\linux-x64\publish\Backend.runtimeconfig.json" />
+    <Content Include="bin\net10.0\linux-x64\publish\Backend.staticwebassets.endpoints.json" />
+    <Content Include="bin\net10.0\linux-x64\publish\DnsClient.dll" />
+    <Content Include="bin\net10.0\linux-x64\publish\Microsoft.AspNetCore.OpenApi.dll" />
+    <Content Include="bin\net10.0\linux-x64\publish\Microsoft.OpenApi.dll" />
+    <Content Include="bin\net10.0\linux-x64\publish\MongoDB.Bson.dll" />
+    <Content Include="bin\net10.0\linux-x64\publish\MongoDB.Driver.dll" />
+    <Content Include="bin\net10.0\linux-x64\publish\SharpCompress.dll" />
+    <Content Include="bin\net10.0\linux-x64\publish\Snappier.dll" />
+    <Content Include="bin\net10.0\linux-x64\publish\ZstdSharp.dll" />
   </ItemGroup>
 
 </Project>
