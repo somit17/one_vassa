@@ -20,7 +20,7 @@ export interface PlanResponse {
 
 @Injectable({ providedIn: 'root' })
 export class PlanService {
-  private readonly endpoint = 'http://localhost:5092/api/plan';
+  private readonly endpoint = '/api/plan';
   private readonly http = inject(HttpClient);
 
   submit(request: PlanRequest): Observable<PlanResponse> {
