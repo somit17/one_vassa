@@ -6,7 +6,7 @@ import { filter, Subscription } from 'rxjs';
   selector: 'app-root', standalone: true, imports: [RouterOutlet, RouterLink, RouterLinkActive],
   template: `
     <header class="site-header" [class.scrolled]="scrolled">
-      <a class="brand" routerLink="/" aria-label="Wild, With Purpose home"><span class="brand-mark">~</span><span>WILD<span class="brand-light"> / </span>ROOT</span></a>
+      <a class="brand" routerLink="/" aria-label="Jungle Tails home"><span class="brand-mark">~</span><span>JUNGLE<span class="brand-light"> </span>TAILS</span></a>
       <nav class="desktop-nav" aria-label="Main navigation">
         <a routerLink="/the-idea" routerLinkActive="active">The Idea</a>
         <a routerLink="/experiences" routerLinkActive="active">Experiences</a>
@@ -24,8 +24,8 @@ import { filter, Subscription } from 'rxjs';
     <main><router-outlet /></main>
     <footer class="site-footer">
       <div class="footer-main">
-        <a class="brand footer-brand" routerLink="/"><span class="brand-mark">~</span><span>WILD<span class="brand-light"> / </span>ROOT</span></a>
-        <p>Wild places. Shared futures.</p>
+        <a class="brand footer-brand" routerLink="/"><span class="brand-mark">~</span><span>JUNGLE<span class="brand-light"> </span>TAILS</span></a>
+        <p>Wild places. Meaningful journeys.</p>
         <p class="footer-description">Thoughtful journeys through India's remarkable landscapes, shaped by local knowledge and a commitment to conservation.</p>
         <a class="footer-plan-link" routerLink="/plan">Start planning a journey <span>↗</span></a>
       </div>
@@ -41,7 +41,7 @@ import { filter, Subscription } from 'rxjs';
         <span class="footer-heading">CONNECT</span>
         <a routerLink="/community">Community</a><a routerLink="/plan">Plan an experience</a><span>India · Field-led journeys</span>
       </div>
-      <div class="footer-bottom"><small>© 2026 WILD / ROOT. An independent concept.</small><small>Travel thoughtfully. Leave the wild thriving.</small><a routerLink="/">Back to top ↑</a></div>
+      <div class="footer-bottom"><small>© 2026 JUNGLE TAILS. Wildlife journeys across India.</small><small>Travel thoughtfully. Leave the wild thriving.</small><a routerLink="/">Back to top ↑</a></div>
     </footer>
   `
 })

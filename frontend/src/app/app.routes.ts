@@ -8,7 +8,7 @@ import { PlanComponent } from './pages/plan/plan.component';
 import { CollectionComponent } from './pages/collections/collection.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, title: 'Wild, With Purpose' },
+  { path: '', component: HomeComponent, title: 'Jungle Tails — Wildlife Journeys in India' },
   { path: 'the-idea', component: IdeaComponent, title: 'The Idea' },
   { path: 'experiences', component: ExperiencesComponent, title: 'Experiences' },
   { path: 'experiences/:slug', component: ExperienceDetailComponent },
